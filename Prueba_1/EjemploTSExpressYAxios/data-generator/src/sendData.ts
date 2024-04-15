@@ -11,7 +11,7 @@ const sendData = async () => {
   datos.push(generarDatosAleatorios());
   }
   datos.push(crearDatosErroneos());
-
+  datos.push(crearDatoCorrecto());
   try {
     // Generar un array de 10 objetos de datos aleatorios en formato CustomData
     const response = await axios.post('http://localhost:3000/users', datos);
@@ -42,7 +42,7 @@ const generarDatosAleatorios = (): CustomData => {
       apellido: faker.name.lastName(),
       cedula: faker.random.number({ min: 10000000, max: 99999999 }), // Cédula de 8 dígitos
       telefono: faker.phone.phoneNumber(),
-      departamento: faker.address.city(),
+      departamento: obtenerCiudadValida(),
       necesita_asistencia_movilidad: faker.random.boolean()
   };
 };
@@ -53,8 +53,31 @@ const crearDatosErroneos = (): CustomData => {
     apellido: "Ronaldo",
     cedula: 2345, // Cédula de 8 dígitos
     telefono: "3456",
-    departamento: "Canelones",
+    departamento: "Paraguay",
     necesita_asistencia_movilidad: false
   };
+  
+};
+const departamentosValidos = [
+  "ARTIGAS", "CANELONES", "CERRO LARGO", "COLONIA", "DURAZNO", 
+  "FLORIDA", "FLORES", "LAVALLEJA", "MALDONADO", "MONTEVIDEO", 
+  "PAYSANDÚ", "RÍO NEGRO", "RIVERA", "ROCHA", "SALTO", 
+  "SAN JOSÉ", "SORIANO", "TACUAREMBÓ", "TREINTA Y TRES"
+];
+const obtenerCiudadValida = (): string => {
+  const indice = faker.random.number({ min: 0, max: departamentosValidos.length - 1 });
+  return departamentosValidos[indice];
+};
+
+const crearDatoCorrecto = (): CustomData => {
+  return {
+    nombre: "Leonel",
+    apellido: "Ronaldo",
+    cedula: 2345678, // Cédula de 8 dígitos
+    telefono: "093456096",
+    departamento: "Montevideo",
+    necesita_asistencia_movilidad: false
+  };
+  
 };
 sendData();

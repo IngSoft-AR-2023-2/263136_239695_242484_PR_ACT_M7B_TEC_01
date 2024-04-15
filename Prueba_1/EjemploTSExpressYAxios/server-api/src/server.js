@@ -6,20 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const QueueFactory_1 = require("../../../src/pipeline/QueueFactory");
 const Pipeline_1 = require("../../../src/pipeline/Pipeline");
+const filters_1 = require("../../../src/filters/filters");
 const app = (0, express_1.default)();
 const port = 3000;
 app.use(express_1.default.json());
 // construye una funcion de creacion de colas dependiendo de un parm se crea una funcion u otra (bull o rabbit)
 const queueFactory = (QueueFactory_1.QueueFactory.getQueueFactory); //ojo que no la invoca aca si no dentro de la Pipeline
 // Crear una nueva instancia de Pipeline usando Bull como backend de la cola
-const pipeline = new Pipeline_1.Pipeline([], queueFactory);
+const pipeline = new Pipeline_1.Pipeline([filters_1.validateCedulaNumber, filters_1.validateDepartment, filters_1.validatePhoneNumber, filters_1.printAssistanceMessage], queueFactory);
 //se crea el listener para cuando un job termina
 pipeline.on('finalOutput', (output) => {
-    console.log(`Salida final: ${output.data}`);
+    //console.log(`Salida final: ${output.data}`);
 });
 //se crea el listener para cuando un job da error
 pipeline.on('errorInFilter', (error, data) => {
-    console.error(`Error en el filtro: ${error}, Datos: ${data.data}`);
+    console.error(`No se ha podido agendar ${data.nombre} ${data.apellido}`);
 });
 app.post('/users', (req, res) => {
     if (validate(req.body)) {

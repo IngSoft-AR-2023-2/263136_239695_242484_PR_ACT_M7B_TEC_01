@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateDepartment = exports.validatePhoneNumber = exports.validateCedulaNumber = void 0;
+exports.printAssistanceMessage = exports.validateDepartment = exports.validatePhoneNumber = exports.validateCedulaNumber = void 0;
 const departamentosValidos = [
     "ARTIGAS", "CANELONES", "CERRO LARGO", "COLONIA", "DURAZNO",
     "FLORIDA", "FLORES", "LAVALLEJA", "MALDONADO", "MONTEVIDEO",
@@ -38,3 +38,15 @@ const validateDepartment = (input) => {
     return input;
 };
 exports.validateDepartment = validateDepartment;
+// Cuarto filtro: valida si la persona necesita asistencia médica.​
+const printAssistanceMessage = (input) => {
+    const { nombre, apellido, necesita_asistencia_movilidad } = input;
+    if (necesita_asistencia_movilidad) {
+        console.log(`La persona ${nombre} ${apellido} necesita asistencia en movilidad`);
+    }
+    else {
+        console.log(`La persona ${nombre} ${apellido} será agendado en el proceso común`);
+    }
+    return input;
+};
+exports.printAssistanceMessage = printAssistanceMessage;

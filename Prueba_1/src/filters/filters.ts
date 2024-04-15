@@ -40,3 +40,15 @@ export const validateDepartment = (input: CustomData): CustomData => {
     }
     return input;
 };
+
+// Cuarto filtro: valida si la persona necesita asistencia médica.​
+export const printAssistanceMessage = (input: CustomData): CustomData => {
+    const { nombre, apellido, necesita_asistencia_movilidad } = input;
+    if (necesita_asistencia_movilidad) {
+        console.log(`La persona ${nombre} ${apellido} necesita asistencia en movilidad`);
+    } else {
+        console.log(`La persona ${nombre} ${apellido} será agendado en el proceso común`);
+    }
+
+    return input;
+};
