@@ -39,3 +39,13 @@ export const reverseLetters = (input: CustomData): CustomData => {
     return { data: result };
 };
 */
+
+export const validatePhoneNumber = (input: CustomData): CustomData => {
+    const telefono: string = input.telefono.replace(/\s/g, ''); 
+    const regex = /^09\d{7}$/; 
+    if (!regex.test(telefono)) {
+        throw new Error("El número de teléfono no cumple con el formato requerido (debe comenzar con '09' y tener 9 dígitos sin contar espacios).");
+    }
+
+    return input;
+};
