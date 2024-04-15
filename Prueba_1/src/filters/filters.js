@@ -1,42 +1,40 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// Primer filtro: Convierte el input a minúsculas y añade un espacio entre cada letra.
-/*export const toLowercaseWithSpaces = (input: CustomData): CustomData => {
-    let result: string = input.data
-        .toLowerCase()             // Convierte el string a minúsculas.
-        .split('')                  // Separa el string en un array de caracteres.
-        .join(' ');                 // Une los caracteres con un espacio entre ellos.
-    console.log(`Filtro toLowercaseWithSpaces,  input${JSON.stringify(input)}, output ${result} }`)
-    return {data: result}
-};
-
-// Segundo filtro: Convierte el input a mayúsculas.
-export const toUppercase = (input: CustomData): CustomData=> {
-    
-    let result:string = input.data.toUpperCase();   // Convierte el string a mayúsculas.
-    console.log(`Filtro toUppercase,  input${JSON.stringify(input)}, output ${result} }`)
-    return {data: result}
-};
-
-// Tercer filtro: Reemplaza cada espacio en el input por un punto.
-export const replaceSpacesWithDots = (input: CustomData): CustomData => {
-    let result = input.data.replace(/ /g, '.');  // Reemplaza cada espacio (' ') por un punto ('.').
-    console.log(`Filtro replaceSpacesWithDots,  input${JSON.stringify(input)}, output ${result} }`)
-    return {data: result}
-};
-
-export const filterWithRandomError = (input: CustomData): CustomData => {
-    if (Math.random() < 0.5) { // Probabilidad de 50% para generar un error
-        throw new Error("Error aleatorio");
+exports.validateDepartment = exports.validatePhoneNumber = exports.validateCedulaNumber = void 0;
+const departamentosValidos = [
+    "ARTIGAS", "CANELONES", "CERRO LARGO", "COLONIA", "DURAZNO",
+    "FLORIDA", "FLORES", "LAVALLEJA", "MALDONADO", "MONTEVIDEO",
+    "PAYSANDÚ", "RÍO NEGRO", "RIVERA", "ROCHA", "SALTO",
+    "SAN JOSÉ", "SORIANO", "TACUAREMBÓ", "TREINTA Y TRES"
+];
+// Segundo filtro: valida que los números de cédula tengan entre 7 y 8 dígitos, y no puede comenzar con 0.
+const validateCedulaNumber = (input) => {
+    const cedula = input.cedula;
+    const cedulaStr = cedula.toString();
+    console.log("Se valida la cedula: " + input.cedula);
+    if (cedulaStr.length < 7 || cedulaStr.length > 8 || cedulaStr.charAt(0) === '0') {
+        throw new Error("Error: el número de cédula debe tener entre 7 y 8 dígitos y no puede comenzar con 0.");
     }
-    return {data: input.data.trim()}
-}
-
-// Invierte el orden de las letras en el input.
-export const reverseLetters = (input: CustomData): CustomData => {
-    // Divide la cadena en un array de caracteres, invierte el orden del array y luego une los caracteres nuevamente en una cadena.
-    let result = input.data.split('').reverse().join('');
-    console.log(`Filtro reverseLetters, input ${JSON.stringify(input)}, output ${result}`);
-    return { data: result };
+    return input;
 };
-*/
+exports.validateCedulaNumber = validateCedulaNumber;
+const validatePhoneNumber = (input) => {
+    const telefono = input.telefono.replace(/\s/g, '');
+    const regex = /^09\d{7}$/;
+    console.log("Se valida el telefono: " + input.telefono);
+    if (!regex.test(telefono)) {
+        throw new Error("El número de teléfono no cumple con el formato requerido (debe comenzar con '09' y tener 9 dígitos sin contar espacios).");
+    }
+    return input;
+};
+exports.validatePhoneNumber = validatePhoneNumber;
+// Tercer filtro: valida que el departamento sea válido entre los 19 del Uruguay.​
+const validateDepartment = (input) => {
+    const departamento = input.departamento.toUpperCase();
+    console.log("Se valida el departamento: " + input.departamento);
+    if (!departamentosValidos.includes(departamento)) {
+        throw new Error("Error: el departamento proporcionado no es válido. Por favor, asegúrate de ingresar un departamento válido de Uruguay.");
+    }
+    return input;
+};
+exports.validateDepartment = validateDepartment;

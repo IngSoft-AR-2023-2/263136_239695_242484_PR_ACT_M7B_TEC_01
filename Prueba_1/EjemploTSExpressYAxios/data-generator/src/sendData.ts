@@ -10,7 +10,7 @@ const sendData = async () => {
   for (let i = 0; i < 10; i++) {
   datos.push(generarDatosAleatorios());
   }
-
+  datos.push(crearDatosErroneos());
 
   try {
     // Generar un array de 10 objetos de datos aleatorios en formato CustomData
@@ -44,6 +44,17 @@ const generarDatosAleatorios = (): CustomData => {
       telefono: faker.phone.phoneNumber(),
       departamento: faker.address.city(),
       necesita_asistencia_movilidad: faker.random.boolean()
+  };
+};
+
+const crearDatosErroneos = (): CustomData => {
+  return {
+    nombre: "Leonel",
+    apellido: "Ronaldo",
+    cedula: 2345, // Cédula de 8 dígitos
+    telefono: "3456",
+    departamento: "Canelones",
+    necesita_asistencia_movilidad: false
   };
 };
 sendData();

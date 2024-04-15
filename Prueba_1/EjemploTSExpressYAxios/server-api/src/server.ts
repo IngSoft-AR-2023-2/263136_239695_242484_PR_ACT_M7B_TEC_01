@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import { CustomData } from '../../../src/data-structure/CustomData';
 import { QueueFactory } from '../../../src/pipeline/QueueFactory';
 import { Pipeline } from '../../../src/pipeline/Pipeline';
-import {} from '../../../src/filters/filters';
+import { validateCedulaNumber, validateDepartment, validatePhoneNumber } from '../../../src/filters/filters';
 const app: Express = express();
 const port: number = 3000;
 
@@ -12,7 +12,7 @@ app.use(express.json());
 const queueFactory = QueueFactory.getQueueFactory<CustomData>; //ojo que no la invoca aca si no dentro de la Pipeline
 
 // Crear una nueva instancia de Pipeline usando Bull como backend de la cola
-const pipeline = new Pipeline<CustomData>([], queueFactory);
+const pipeline = new Pipeline<CustomData>([validateCedulaNumber, validateDepartment, validatePhoneNumber], queueFactory);
 
 
 //se crea el listener para cuando un job termina
@@ -22,7 +22,7 @@ pipeline.on('finalOutput', (output) => {
 
 //se crea el listener para cuando un job da error
 pipeline.on('errorInFilter', (error, data) => {
-    console.error(`Error en el filtro: ${error}, Datos: ${data.data}`);
+    console.error(`No se ha podido agendar ${data.nombre} ${data.apellido}`);
 });
 
 app.post('/users', (req: Request, res: Response) => {
