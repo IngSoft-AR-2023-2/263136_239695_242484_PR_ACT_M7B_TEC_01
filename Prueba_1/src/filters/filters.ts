@@ -1,41 +1,31 @@
 import { CustomData } from '../data-structure/CustomData';
-// Primer filtro: Convierte el input a minúsculas y añade un espacio entre cada letra.
-/*export const toLowercaseWithSpaces = (input: CustomData): CustomData => {
-    let result: string = input.data
-        .toLowerCase()             // Convierte el string a minúsculas.
-        .split('')                  // Separa el string en un array de caracteres.
-        .join(' ');                 // Une los caracteres con un espacio entre ellos.
-    console.log(`Filtro toLowercaseWithSpaces,  input${JSON.stringify(input)}, output ${result} }`)
-    return {data: result}
-};
 
-// Segundo filtro: Convierte el input a mayúsculas.
-export const toUppercase = (input: CustomData): CustomData=> {
-    
-    let result:string = input.data.toUpperCase();   // Convierte el string a mayúsculas.
-    console.log(`Filtro toUppercase,  input${JSON.stringify(input)}, output ${result} }`)
-    return {data: result}
-};
+const departamentosValidos = [
+    "ARTIGAS", "CANELONES", "CERRO LARGO", "COLONIA", "DURAZNO", 
+    "FLORIDA", "FLORES", "LAVALLEJA", "MALDONADO", "MONTEVIDEO", 
+    "PAYSANDÚ", "RÍO NEGRO", "RIVERA", "ROCHA", "SALTO", 
+    "SAN JOSÉ", "SORIANO", "TACUAREMBÓ", "TREINTA Y TRES"
+];
 
-// Tercer filtro: Reemplaza cada espacio en el input por un punto.
-export const replaceSpacesWithDots = (input: CustomData): CustomData => {
-    let result = input.data.replace(/ /g, '.');  // Reemplaza cada espacio (' ') por un punto ('.').
-    console.log(`Filtro replaceSpacesWithDots,  input${JSON.stringify(input)}, output ${result} }`)
-    return {data: result}
-};
+// Segundo filtro: valida que los números de cédula tengan entre 7 y 8 dígitos, y no puede comenzar con 0.
+export const validateCedulaNumber = (input: CustomData): CustomData => {
+    const cedula: number = input.cedula;
+    const cedulaStr: string = cedula.toString();
 
-export const filterWithRandomError = (input: CustomData): CustomData => {
-    if (Math.random() < 0.5) { // Probabilidad de 50% para generar un error
-        throw new Error("Error aleatorio");
+    if (cedulaStr.length < 7 || cedulaStr.length > 8 || cedulaStr.charAt(0) === '0') {
+        throw new Error("Error: el número de cédula debe tener entre 7 y 8 dígitos y no puede comenzar con 0.");
     }
-    return {data: input.data.trim()}
-}
 
-// Invierte el orden de las letras en el input.
-export const reverseLetters = (input: CustomData): CustomData => {
-    // Divide la cadena en un array de caracteres, invierte el orden del array y luego une los caracteres nuevamente en una cadena.
-    let result = input.data.split('').reverse().join('');
-    console.log(`Filtro reverseLetters, input ${JSON.stringify(input)}, output ${result}`);
-    return { data: result };
+    return input;
 };
-*/
+
+// Tercer filtro: valida que el departamento sea válido entre los 19 del Uruguay.​
+export const validateDepartment = (input: CustomData): CustomData => {
+    const departamento = input.departamento.toUpperCase();
+
+    if (!departamentosValidos.includes(departamento)) {
+        throw new Error("Error: el departamento proporcionado no es válido. Por favor, asegúrate de ingresar un departamento válido de Uruguay.");
+    }
+
+    return input;
+};
